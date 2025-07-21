@@ -29,11 +29,11 @@ class Terminal(CTkFrame):
         if self.handler.check_if_command(input):
             self.display_entry(input)
             self.handler.process(input)
-            self.viewport_disabled()
+        self.viewport_disabled()
         self.clear_entry()
         
     def display_from_handler(self, input):
-        self.viewport_normal
+        self.viewport_normal()
         self.display_entry(input)
         self.viewport_disabled()
         
@@ -53,5 +53,9 @@ class Terminal(CTkFrame):
         
     def clear_entry(self):
         self.entry.delete(0, 'end')
-
+        
+    def clear_viewport(self):
+        self.viewport_normal()
+        self.viewport.delete(0.0, 'end')
+        self.viewport_disabled()
         

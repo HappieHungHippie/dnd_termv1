@@ -1,2 +1,5 @@
 
+    clear: Clears terminal
     help: Shows possible commands
+    read_log: Displays entire log
+    

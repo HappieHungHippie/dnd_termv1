@@ -1,0 +1,5 @@
+hello.
+how are you?
+ 
+This is just an example "Log".
+This is only a test.
