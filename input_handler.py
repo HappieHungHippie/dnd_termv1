@@ -1,10 +1,11 @@
-from commands import HelpCommand, LogCommand
+from commands import CharCommand, HelpCommand, LogCommand
 from messages import Messages
 
 class InputHandler:
     def __init__(self, master):
         self.master = master
 
+        self.char = CharCommand()
         self.help = HelpCommand
         self.log = LogCommand(self)
         
@@ -19,10 +20,10 @@ class InputHandler:
         
         self.split_tag(input)
 
-        if self.primary_tag == 'clear':
+        if self.primary_tag == 'char':
+            self.char.process_tag(self.input)
+        elif self.primary_tag == 'clear':
             self.master.clear_viewport()
-        elif self.primary_tag == 'create':
-            print('Create Character')
         elif self.primary_tag == 'help':
             self.help_command()
         elif self.primary_tag == 'log':
