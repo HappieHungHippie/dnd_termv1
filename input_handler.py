@@ -4,36 +4,56 @@ from messages import Messages
 class InputHandler:
     def __init__(self, master):
         self.master = master
-        self.input: str = None
 
         self.help = HelpCommand
-        self.log = LogCommand()
-
-        self.commands = ['clear', 'create', 'help', 'log', 'read_log']
+        self.log = LogCommand(self)
+        
+        self.tag: str = None
+        self.primary_tag: str = None
+        self.secondary_tag: str = None
+        self.value: str = None
+        
+        self.input: list[str] = None
 
     def process(self, input: str):
-        input = input.lower().strip()
-        input_split = input.split(':', 1)
-        command = input_split[0]
+        
+        self.split_tag(input)
 
-        if command == 'clear':
+        if self.primary_tag == 'clear':
             self.master.clear_viewport()
-        elif command == 'create':
+        elif self.primary_tag == 'create':
             print('Create Character')
-        elif command == 'help':
+        elif self.primary_tag == 'help':
             self.help_command()
-        elif command == 'log':
-            if len(input_split) == 2:
-                print(input_split[1])
-        elif command == 'read_log':
-            self.master.display_from_handler(self.log.get_text())
+        elif self.primary_tag == 'log':
+            self.log.process_tag(self.input)
         else:
-            self.master.display_entry(Messages.invalid_tag)
+            self.master.display_entry(f'{Messages.invalid_tag} ({self.tag})')
+            
+        self.tag: str = None
+        self.primary_tag: str = None
+        self.secondary_tag: str = None
+        self.value: str = None
+            
+    def split_tag(self, input: str):
+        input = input.lower().strip()
+        
+        if len(input.split(':', 1)) == 2:
+            self.tag, self.value = input.split(':', 1)
+        else:
+            if input.endswith(':'):
+                self.tag = input[0:-1]
+            else:
+                self.tag = input
+            
+        if len(self.tag.split('.')) == 2:
+            self.primary_tag, self.secondary_tag = self.tag.split('.')
+        else:
+            self.primary_tag = self.tag
+            
+        self.input = [self.primary_tag, self.secondary_tag, self.value]
 
     def help_command(self):
         self.master.display_from_handler(self.help.get_text())
-
-    def check_if_command(self, input):
-        return input in self.commands
 
         

@@ -1,5 +1,8 @@
 
     clear: Clears terminal
     help: Shows possible commands
-    read_log: Displays entire log
+    log: Write to log
+        ~.delete: Deletes the last line if log
+        ~.delete_all: Deletes entire log
+        ~.read: Displays entire log
     

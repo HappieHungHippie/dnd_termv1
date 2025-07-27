@@ -26,9 +26,7 @@ class Terminal(CTkFrame):
     def on_enter(self, _=None):
         self.viewport_normal()
         input = self.get_entry()
-        if self.handler.check_if_command(input):
-            self.display_entry(input)
-            self.handler.process(input)
+        self.handler.process(input)
         self.viewport_disabled()
         self.clear_entry()
         
