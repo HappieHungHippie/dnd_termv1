@@ -8,6 +8,7 @@
         ~.level: Display or edit level
         ~.name: Display or edit name
         ~.race: Display or edit race
+        ~.skills: Display skills
         ~.'ability': Display or edit selected 'ability' ('strength', 'wisdom', etc.)
     clear: Clears terminal
     help: Shows possible commands

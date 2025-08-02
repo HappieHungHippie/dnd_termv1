@@ -51,5 +51,7 @@ class CharCommand:
                 self.char.set_ability_score(secondary, value)
             else:
                 self.char.display_ability_score(secondary)
+        elif secondary in self.char.skills:
+            self.char.display_skill(secondary)
         else:
             self.master.display_entry(f'{Messages.invalid_secondary}: {secondary}')

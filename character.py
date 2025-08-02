@@ -241,13 +241,17 @@ class Character:
 
     def display_race(self):
         race = self.race if self.race is not None else '?'
-        self.master.display_entry(f'Race: {race}')
+        self.master.display_entry(f'Race: {race.capitalize().strip()}')
 
     def display_skills(self):
         for skill in self.sorted_skills:
             mod = self.skills[skill]
             skill_mod = str(mod) if mod is not None else '?'
             self.master.display_entry(f'{skill.capitalize()}: {skill_mod}')
+            
+    def display_skill(self, skill: str):
+        mod = self.skills[skill]
+        self.master.display_entry(f'{skill.capitalize()}: {mod}')
 
     def gap(self):
         self.master.display_entry('----------')
