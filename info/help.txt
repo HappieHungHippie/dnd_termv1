@@ -10,6 +10,7 @@
         ~.race: Display or edit race
         ~.skills: Display skills
         ~.'ability': Display or edit selected 'ability' ('strength', 'wisdom', etc.)
+        ~.'skill': Display selected 'skill' ('athletics', 'perception', etc.)
     clear: Clears terminal
     help: Shows possible commands
     log: Write to log
