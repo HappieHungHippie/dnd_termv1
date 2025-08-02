@@ -1,13 +1,13 @@
-from commands import CharCommand, HelpCommand, LogCommand
+from commands import HelpCommand, LogCommand, CharCommand
 from messages import Messages
 
 class InputHandler:
     def __init__(self, master):
         self.master = master
 
-        self.char = CharCommand()
+        self.char = CharCommand(self.master)
         self.help = HelpCommand
-        self.log = LogCommand(self)
+        self.log = LogCommand(self.master)
         
         self.tag: str = None
         self.primary_tag: str = None
@@ -19,7 +19,6 @@ class InputHandler:
     def process(self, input: str):
         
         self.split_tag(input)
-
         if self.primary_tag == 'char':
             self.char.process_tag(self.input)
         elif self.primary_tag == 'clear':
@@ -55,6 +54,6 @@ class InputHandler:
         self.input = [self.primary_tag, self.secondary_tag, self.value]
 
     def help_command(self):
-        self.master.display_from_handler(self.help.get_text())
+        self.master.display_entry(self.help.get_text())
 
         

@@ -1,4 +1,14 @@
 
+    char:
+        ~.abilites: Display or edit abilities
+        ~.ac: Display armor class
+        ~.class: Display or edit class
+        ~.display: Display all character information
+        ~.init: Display initiative
+        ~.level: Display or edit level
+        ~.name: Display or edit name
+        ~.race: Display or edit race
+        ~.'ability': Display or edit selected 'ability' ('strength', 'wisdom', etc.)
     clear: Clears terminal
     help: Shows possible commands
     log: Write to log

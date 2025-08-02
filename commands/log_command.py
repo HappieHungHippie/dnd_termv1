@@ -17,9 +17,9 @@ class LogCommand:
         elif secondary == 'delete_all':
             self.delete_all()
         elif secondary == 'read':
-            self.master.master.display_from_handler(self.get_text())
+            self.master.display_entry(self.get_text())
         else:
-            self.master.master.display_from_handler(f'{Messages.invalid_secondary} ({secondary})')
+            self.master.display_entry(f'{Messages.invalid_secondary} ({secondary})')
 
     def append_to_log(self, value: str):
         value = value.strip()
