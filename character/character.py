@@ -1,15 +1,17 @@
 from messages import Messages
+from .classes import Class
 
 
 class Character:
     def __init__(self, master):
         self.master = master      
-        self.creating = False
+        self.class_handler = Class()
 
         self.name: str = None
         self.hit_points: int = None
         self.level: int = None
         self._class: str = None
+        self.subclass: str = None
         self.race: str = None
 
         self.armor_class: int = None
@@ -91,7 +93,7 @@ class Character:
                     self.master.display_entry(f"Invalid number: {nums[idx]}")
                     return
         else: 
-            self.master.display_entry(Messages.invalid_set_all_ability_scores)
+            self.master.display_entry(f'{Messages.invalid_set_all_ability_scores}: {nums}')
 
     def set_ability_score(self, ability: str, value: int):
         if ability in self.ability_scores:
@@ -111,8 +113,12 @@ class Character:
             self.armor_class = 10 + int(self.ability_modifiers['dexterity'])
 
     def set_class(self, value: str):
-        self._class = value.capitalize().strip()
-        self.display_class()
+        value = value.lower().strip()
+        if value in self.class_handler.classes:
+            self._class = value.capitalize().strip()
+            self.display_class()
+        else:
+            self.master.display_entry(f'{Messages.invalid_class}: {value}')
 
     def set_initiative(self):
         self.initiative = self.ability_modifiers['dexterity'] if self.ability_modifiers['dexterity'] is not None else '?'
@@ -123,7 +129,7 @@ class Character:
             self.set_proficiency_bonus()
             self.display_level()
         else:
-            self.master.display_entry(f'{Messages.invalid_level_selection}')
+            self.master.display_entry(f'{Messages.invalid_level_selection}: {value}')
 
     def set_name(self, name: str):
         self.name = name.strip().capitalize()
