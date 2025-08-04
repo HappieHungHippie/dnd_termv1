@@ -9,6 +9,7 @@ class Character:
 
         self.name: str = None
         self.hit_points: int = None
+        self.class_hit_points: int = None
         self.level: int = None
         self._class: str = None
         self.subclass: str = None
@@ -101,7 +102,9 @@ class Character:
             self.ability_scores[ability] = value
             self.ability_modifiers[ability] = mod
             self.set_skill(ability, mod)
-            if ability == 'dexterity':
+            if ability == 'consitution':
+                self.set_hit_points(in_set=True)
+            elif ability == 'dexterity':
                 self.set_armor_class()
                 self.set_initiative()
             self.display_ability_score(ability)
@@ -116,9 +119,28 @@ class Character:
         value = value.lower().strip()
         if value in self.class_handler.classes:
             self._class = value.capitalize().strip()
+            self.set_class_hit_points()
             self.display_class()
         else:
             self.master.display_entry(f'{Messages.invalid_class}: {value}')
+
+    def set_class_hit_points(self):
+        self.class_hit_points = self.class_handler.level_1_max_hit_points[self._class.lower()]
+
+    def set_hit_points(self, value=None, in_set=False):
+        con_mod = self.ability_modifiers['constitution'] if self.ability_modifiers['constitution'] is not None else 0
+        if self._class is not None:
+            if value is None:
+                self.hit_points = self.class_hit_points + con_mod
+            elif value == 'auto':
+                if self.level == 1 or '1':
+                    self.hit_points = self.class_hit_points + con_mod
+            self.display_hit_points()
+        else:
+            if in_set:
+                return
+            else:
+                self.master.display_entry(f'{Messages.missing_class}')
 
     def set_initiative(self):
         self.initiative = self.ability_modifiers['dexterity'] if self.ability_modifiers['dexterity'] is not None else '?'
@@ -217,6 +239,7 @@ class Character:
         self.display_race()
         self.display_class()
         self.gap()
+        self.display_hit_points()
         self.display_armor_class()
         self.display_initiative()
         self.display_proficiency_bonus()
@@ -232,6 +255,10 @@ class Character:
     def display_initiative(self):
         init = self.initiative if self.initiative is not None else '?'
         self.master.display_entry(f'Initiative: {init}')
+
+    def display_hit_points(self):
+        hit_points = self.hit_points if self.hit_points is not None else '?'
+        self.master.display_entry(f'Hit Points: {hit_points}')
 
     def display_level(self):
         level = self.level if self.level is not None else '?'

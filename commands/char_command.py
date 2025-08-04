@@ -26,6 +26,11 @@ class CharCommand:
             self.char.display_character()
         elif secondary == 'init':
             self.char.display_initiative()
+        elif secondary == 'hp':
+            if value:
+                self.char.set_hit_points(value)
+            else:
+                self.char.display_hit_points()
         elif secondary == 'level':
             if value:
                 self.char.set_level(value)
