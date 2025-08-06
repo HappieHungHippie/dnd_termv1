@@ -94,7 +94,7 @@ class Character:
                     self.master.display_entry(f"Invalid number: {nums[idx]}")
                     return
         else: 
-            self.master.display_entry(f'{Messages.invalid_set_all_ability_scores}: {nums}')
+            self.master.display_entry(f'{Messages.invalid_set_all_ability_scores}')
 
     def set_ability_score(self, ability: str, value: int):
         if ability in self.ability_scores:
