@@ -1,5 +1,6 @@
 from commands import HelpCommand, LogCommand, CharCommand
 from messages import Messages
+from file_handler import FileHandler
 
 class InputHandler:
     def __init__(self, master):
@@ -8,6 +9,7 @@ class InputHandler:
         self.char = CharCommand(self.master)
         self.help = HelpCommand
         self.log = LogCommand(self.master)
+        self.file_handler = FileHandler()
         
         self.tag: str = None
         self.primary_tag: str = None

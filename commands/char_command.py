@@ -48,6 +48,8 @@ class CharCommand:
                 self.char.set_race(value)
             else:
                 self.char.display_race()
+        elif secondary == 'save':
+            self.char.save()
         elif secondary == 'skills':
             self.char.display_skills()
 

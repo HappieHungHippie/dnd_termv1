@@ -13,13 +13,13 @@ class Terminal(CTkFrame):
         self.rowconfigure(list(range(10)), weight=1)
         self.columnconfigure(0, weight=1)
         
-        self.viewport = CTkTextbox(self, state='disabled', fg_color=Color.cream)
+        self.viewport = CTkTextbox(self, state='disabled', fg_color=Color.cream, text_color=Color.burgundy)
         self.viewport.grid(row=0, rowspan=10, padx=5, pady=(5, 2.5), sticky='nsew')
         self.viewport_normal()
         self.viewport.insert('end', 'Use \'help\' to see possible command\n')
         self.viewport_disabled()
         
-        self.entry = CTkEntry(self, fg_color=Color.cream)
+        self.entry = CTkEntry(self, fg_color=Color.cream, text_color=Color.burgundy)
         self.entry.grid(row=10, column=0, padx=5, pady=(2.5, 5), sticky='nsew')
         self.entry.bind('<Return>', self.on_enter)
         

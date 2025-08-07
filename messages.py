@@ -7,3 +7,6 @@ class Messages:
     invalid_set_all_ability_scores = 'Invaild Abilitiy Scores. Must input SIX numbers.'
     
     missing_class = 'Please choose a class.'
+    missing_name = 'Character needs a name.'
+    
+    save_character = 'has been saved.'
