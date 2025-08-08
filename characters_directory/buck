@@ -1,0 +1,19 @@
+{
+    "ability scores": {
+        "strength": null,
+        "dexterity": null,
+        "constitution": null,
+        "intelligence": null,
+        "wisdom": null,
+        "charisma": null
+    },
+    "armor class": null,
+    "class": null,
+    "class hit points": null,
+    "hit points": null,
+    "initiative": null,
+    "level": null,
+    "name": "Buck",
+    "procifiency bonus": null,
+    "race": null
+}

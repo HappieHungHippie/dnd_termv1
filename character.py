@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 from messages import Messages
 from .classes import Class
-from file_handler import FileHandler
+from character.character_handler import FileHandler
 
 
 class Character:

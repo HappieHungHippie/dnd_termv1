@@ -2,14 +2,14 @@ import json
 from pathlib import Path
 from messages import Messages
 from .classes import Class
-from file_handler import FileHandler
+from .character_handler import CharacterHandler
 
 
 class Character:
     def __init__(self, master):
         self.master = master      
         self.class_handler = Class()
-        self.file_handler = FileHandler
+        self.char_handler = CharacterHandler()
 
         self.name: str = None
         self.hit_points: int = None
@@ -84,6 +84,8 @@ class Character:
         }
         
         self.sorted_skills = dict(sorted(self.skills.items()))
+
+        self.proficient_skills: dict ={}
         
         self.info = {
             'ability scores': self.ability_scores,
@@ -131,6 +133,15 @@ class Character:
         if self.ability_modifiers['dexterity'] is not None:
             self.armor_class = 10 + int(self.ability_modifiers['dexterity'])
             self.update()
+
+    def set_basics(self, value: str):
+        value = value.split(',')
+        if len(value) == 4:
+            name, level, race, _class = value
+            self.set_name(name)
+            self.set_level(level)
+            self.set_race(race)
+            self.set_class(_class)
 
     def set_class(self, value: str):
         value = value.lower().strip()
@@ -198,6 +209,16 @@ class Character:
         else:
             self.master.display_entry("Invalid level for proficiency bonus.")
 
+    def set_proficient_skills(self, value):
+        value = value.lower().strip()
+        if value == 'skills':
+            self.display_proficient_skills()
+        else:
+            for skill in value:
+                if skill in self.skills:
+                    self.proficient_skills[skill] = self.skills[skill]
+            print(self.proficient_skills)
+
     def set_race(self, value: str):
         self.race = value.capitalize().strip()
         self.update()
@@ -259,12 +280,15 @@ class Character:
         ac = self.armor_class if self.armor_class is not None else '?'
         self.master.display_entry(f"Armor Class: {ac}")
 
-    def display_character(self):
-
+    def display_basics(self):
         self.display_name()
         self.display_level()
         self.display_race()
         self.display_class()
+
+    def display_character(self):
+
+        self.display_basics()
         self.gap()
         self.display_hit_points()
         self.display_armor_class()
@@ -291,6 +315,10 @@ class Character:
         level = self.level if self.level is not None else '?'
         self.master.display_entry(f'Level: {level}')
 
+    def display_list(self):
+        for char in self.char_handler.get_characters():
+            self.master.display_entry(char)
+
     def display_name(self):
         name = self.name if self.name is not None else '?'
         self.master.display_entry(f'Name: {name}')
@@ -299,16 +327,75 @@ class Character:
         prof_bonus = self.proficiency_bonus if self.proficiency_bonus is not None else '?'
         self.master.display_entry(f'Proficieancy Bonus: {prof_bonus}')
 
+    def display_proficient_skills(self):
+        for skill in self.proficient_skills:
+            mod = self.proficient_skills[skill]
+            skill_mod = str(mod) if mod is not None else '?'
+            self.master.display_entry(f'{skill.capitalize()}: {skill_mod}')
+
     def display_race(self):
         race = self.race if self.race is not None else '?'
         self.master.display_entry(f'Race: {race.capitalize().strip()}')
 
-    def display_skills(self):
-        for skill in self.sorted_skills:
+    def display_skills(self, value=None):
+        if value:
+            value = value.lower().strip()
+            if value == 'strength':
+                self.display_skills_strength()
+            elif value == 'charisma':
+                self.display_skills_charisma()
+            elif value == 'constitution':
+                self.display_skills_constitution()
+            elif value == 'dexterity':
+                self.display_skills_dexterity()
+            elif value == 'intellegence':
+                self.display_skills_intellegence()
+            elif value == 'wisdom':
+                self.display_skills_wisdom()
+            else:
+                self.master.display_entry(Messages.invalid_ability)
+        else:
+            for skill in self.sorted_skills:
+                mod = self.skills[skill]
+                skill_mod = str(mod) if mod is not None else '?'
+                self.master.display_entry(f'{skill.capitalize()}: {skill_mod}')
+            
+    def display_skills_charisma(self):
+        for skill in self.charisma_skills:
             mod = self.skills[skill]
             skill_mod = str(mod) if mod is not None else '?'
             self.master.display_entry(f'{skill.capitalize()}: {skill_mod}')
-            
+
+    def display_skills_constitution(self):
+        for skill in self.constitution_skills:
+            mod = self.skills[skill]
+            skill_mod = str(mod) if mod is not None else '?'
+            self.master.display_entry(f'{skill.capitalize()}: {skill_mod}')
+
+    def display_skills_dexterity(self):
+        for skill in self.dexterity_skills:
+            mod = self.skills[skill]
+            skill_mod = str(mod) if mod is not None else '?'
+            self.master.display_entry(f'{skill.capitalize()}: {skill_mod}')
+
+    def display_skills_intellegence(self):
+        for skill in self.intelligence_skills:
+            mod = self.skills[skill]
+            skill_mod = str(mod) if mod is not None else '?'
+            self.master.display_entry(f'{skill.capitalize()}: {skill_mod}')
+
+    def display_skills_strength(self):
+        for skill in self.strength_skills:
+            mod = self.skills[skill]
+            skill_mod = str(mod) if mod is not None else '?'
+            self.master.display_entry(f'{skill.capitalize()}: {skill_mod}')
+
+    def display_skills_wisdom(self):
+        for skill in self.wisdom_skills:
+            mod = self.skills[skill]
+            skill_mod = str(mod) if mod is not None else '?'
+            self.master.display_entry(f'{skill.capitalize()}: {skill_mod}')
+
     def display_skill(self, skill: str):
         mod = self.skills[skill]
         self.master.display_entry(f'{skill.capitalize()}: {mod}')
@@ -316,6 +403,18 @@ class Character:
     def gap(self):
         self.master.display_entry('----------')
 
+
+    def save(self):
+        name = self.name.strip().lower() if self.name else None
+        if name:
+            Path(self.char_handler.chardir).mkdir(parents=True, exist_ok=True)
+            charfile = Path(f'{self.char_handler.chardir}/{name}')
+            with open(charfile, 'w') as file:
+                json.dump(self.info, file, indent=4)
+            self.char_handler.load_characters()
+            self.master.display_entry(f'{self.name.capitalize()} {Messages.save_character}')
+        else:
+            self.master.display_entry(Messages.missing_name)
 
     def update(self):
         self.info = {
@@ -330,17 +429,81 @@ class Character:
             'procifiency bonus': self.proficiency_bonus,
             'race': self.race
         }
+
+    def clear(self):
+        self.name: str = None
+        self.hit_points: int = None
+        self.class_hit_points: int = None
+        self.level: int = None
+        self._class: str = None
+        self.race: str = None
+
+        self.armor_class: int = None
+        self.initiative: int = None
+        self.proficiency_bonus = None
+
+        self.ability_scores: dict[str, int] = {
+            'strength': None,
+            'dexterity': None,
+            'constitution': None,
+            'intelligence': None,
+            'wisdom': None,
+            'charisma': None
+        }
+
+        self.ability_modifiers: dict[str, int] = {
+            key: None for key in self.ability_scores
+        }
+
+        self.saving_throws: dict[str, int] = {
+            key: None for key in self.ability_scores
+        }
+
+        self.strength_skills: dict[str, int] = {
+            'athletics': None
+        }
+
+        self.dexterity_skills: dict[str, int] = {
+            'acrobatics': None,
+            'sleight of hand': None,
+            'stealth': None
+        }
+
+        self.constitution_skills: dict[str, int] = {}
+
+        self.intelligence_skills: dict[str, int] = {
+            'arcana': None,
+            'history': None,
+            'investigation': None,
+            'nature': None,
+            'religion': None
+        }
+
+        self.wisdom_skills: dict[str, int] = {
+            'animal handling': None,
+            'insight': None,
+            'medicine': None,
+            'perception': None,
+            'survival': None
+        }
+
+        self.charisma_skills: dict[str, int] = {
+            'deception': None,
+            'intimidation': None,
+            'performance': None,
+            'persuasion': None
+        }
+
+        self.skills: dict[str, int] = {
+            **self.strength_skills,
+            **self.dexterity_skills,
+            **self.constitution_skills,
+            **self.intelligence_skills,
+            **self.wisdom_skills,
+            **self.charisma_skills
+        }
         
-    def save(self):
-        name = self.name.strip().lower() if self.name else None
-        if name:
-            try:
-                Path(self.file_handler.chardir).mkdir(parents=True, exist_ok=True)
-                charfile = Path(f'{FileHandler.chardir}/{name}')
-                with open(charfile, 'w') as file:
-                    json.dump(self.info, file, indent=4)
-                self.master.display_entry(f'{self.name.capitalize()} {Messages.save_character}')
-            except Exception as e:
-                self.master.display_entry(f'Error saving character: {str(e)}')
-        else:
-            self.master.display_entry(Messages.missing_name)
+        self.sorted_skills = dict(sorted(self.skills.items()))
+
+        self.master.display_entry(Messages.clear_character)
+

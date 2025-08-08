@@ -2,12 +2,18 @@
     char:
         ~.abilites: Display or edit abilities
         ~.ac: Display armor class
+        ~.basics: Display or edit Name, Level, Race, and Class
         ~.class: Display or edit class
+        ~.clear: Clears all edits on current character
         ~.display: Display all character information
+        ~.hp: Display or edit hit points. Use 'auto' to generate hit points.
         ~.init: Display initiative
         ~.level: Display or edit level
+        ~.list: Displays all saved characters
         ~.name: Display or edit name
+        ~.prof: Display proficiency bonus
         ~.race: Display or edit race
+        ~.save: Save character
         ~.skills: Display skills
         ~.'ability': Display or edit selected 'ability' ('strength', 'wisdom', etc.)
         ~.'skill': Display selected 'skill' ('athletics', 'perception', etc.)
@@ -16,5 +22,6 @@
     log: Write to log
         ~.delete: Deletes the last line if log
         ~.delete_all: Deletes entire log
-        ~.read: Displays entire log
+        ~.read: Displays entire Log
+    sep: Displays '----------'
     

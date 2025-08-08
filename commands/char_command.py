@@ -15,13 +15,18 @@ class CharCommand:
                 self.char.display_ability_scores()
         elif secondary == 'ac':
             self.char.display_armor_class()
+        elif secondary == 'basics':
+            if value:
+                self.char.set_basics(value)
+            else:
+                self.char.display_basics()
         elif secondary == 'class':
             if value:
                 self.char.set_class(value)
             else:
                 self.char.display_class()
-        elif secondary == 'create':
-            self.char.create()
+        elif secondary == 'clear':
+            self.char.clear()
         elif secondary == 'display':
             self.char.display_character()
         elif secondary == 'init':
@@ -36,13 +41,18 @@ class CharCommand:
                 self.char.set_level(value)
             else:
                 self.char.display_level()
+        elif secondary == 'list':
+            self.char.display_list()
         elif secondary == 'name':
             if value:
                 self.char.set_name(value)
             else:
                 self.char.display_name()
         elif secondary == 'prof':
-            self.char.display_proficiency_bonus()
+            if value:
+                self.char.set_proficient_skills(value=value)
+            else:
+                self.char.display_proficiency_bonus()
         elif secondary == 'race':
             if value:
                 self.char.set_race(value)
@@ -51,7 +61,10 @@ class CharCommand:
         elif secondary == 'save':
             self.char.save()
         elif secondary == 'skills':
-            self.char.display_skills()
+            if value:
+                self.char.display_skills(value=value)
+            else:
+                self.char.display_skills()
 
         elif secondary in self.char.ability_scores:
             if value:

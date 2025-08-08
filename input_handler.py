@@ -1,6 +1,6 @@
 from commands import HelpCommand, LogCommand, CharCommand
 from messages import Messages
-from file_handler import FileHandler
+from character import CharacterHandler
 
 class InputHandler:
     def __init__(self, master):
@@ -9,7 +9,6 @@ class InputHandler:
         self.char = CharCommand(self.master)
         self.help = HelpCommand
         self.log = LogCommand(self.master)
-        self.file_handler = FileHandler()
         
         self.tag: str = None
         self.primary_tag: str = None
@@ -29,6 +28,8 @@ class InputHandler:
             self.help_command()
         elif self.primary_tag == 'log':
             self.log.process_tag(self.input)
+        elif self.primary_tag == 'sep':
+            self.master.display_entry('----------')
         else:
             self.master.display_entry(f'{Messages.invalid_tag} ({self.tag})')
             

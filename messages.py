@@ -5,8 +5,10 @@ class Messages:
     invalid_secondary = 'Invalid Tag Extension'
     invalid_level_selection = 'Invalid Level. Level must be greater than or equal to one and less than or equal to twenty.'
     invalid_set_all_ability_scores = 'Invaild Abilitiy Scores. Must input SIX numbers.'
+    invalid_ability = 'Invalid Ability'
     
     missing_class = 'Please choose a class.'
     missing_name = 'Character needs a name.'
     
     save_character = 'has been saved.'
+    clear_character = 'Character has been cleared.'
